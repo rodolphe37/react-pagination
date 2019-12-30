@@ -67,11 +67,15 @@ class App extends React.Component {
         </table>
 
         <div className={styles.pagination}>
-          <span>&laquo;</span>
+          <span onClick={() => this.makeHttpRequestWithPage(1)}>1</span>
+          <span onClick={() => this.makeHttpRequestWithPage(2)}>2</span>
+          <span onClick={() => this.makeHttpRequestWithPage(3)}>3</span>
+          <span onClick={() => this.makeHttpRequestWithPage(4)}>4</span>
+          {/* <span>&laquo;</span>
           <span className={styles.active}>1</span>
           <span>2</span>
           <span>3</span>
-          <span>4</span>
+          <span>4</span> */}
         </div>
       </div>
     );
