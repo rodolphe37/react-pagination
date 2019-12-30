@@ -4,15 +4,14 @@ import styles from './App.module.css';
 
 
 class App extends React.Component {
-  constructor(props){
-    super(props);
-    this.state = {
+
+    state = {
       users: null,
       total: null,
       per_page: null,
-      current_page: null
+      current_page: 1
     }
-  }
+  
 
   componentDidMount() {
     this.makeHttpRequestWithPage(1);
@@ -34,13 +33,13 @@ class App extends React.Component {
       users: data.data,
       total: data.total,
       per_page: data.per_page,
-      current_page: data.current_page,
+      current_page: data.page,
     });
   };
 
 
   render() { console.dir(this.state.users)
-    let users;
+    let users, renderPageNumbers;
 
     if (this.state.users !== null) {
       users = this.state.users.map(user => (
@@ -51,6 +50,25 @@ class App extends React.Component {
         </tr>
       ));
     };
+
+    const pageNumber = [];
+    if (this.state.total !== null) {
+      for (let i = 1; i <= Math.ceil(this.state.total / this.state.per_page); i++) {
+        pageNumber.push(i);
+      };
+
+      renderPageNumbers = pageNumber.map(number => {
+        let classes = this.state.current_page === number ? styles.active : '';
+
+        if (number === 1 || number === this.state.total || (number >= this.state.current_page - 2 && number <= this.state.current_page + 2)) {
+
+          return (
+            <span key={number} className={classes} onClick= {() => this.makeHttpRequestWithPage(number)}>{number}</span>
+          );
+        }
+      });
+    };
+
     return (
       <div className={styles.app}>
         <table className={styles.table}>
@@ -67,15 +85,9 @@ class App extends React.Component {
         </table>
 
         <div className={styles.pagination}>
-          <span onClick={() => this.makeHttpRequestWithPage(1)}>1</span>
-          <span onClick={() => this.makeHttpRequestWithPage(2)}>2</span>
-          <span onClick={() => this.makeHttpRequestWithPage(3)}>3</span>
-          <span onClick={() => this.makeHttpRequestWithPage(4)}>4</span>
-          {/* <span>&laquo;</span>
-          <span className={styles.active}>1</span>
-          <span>2</span>
-          <span>3</span>
-          <span>4</span> */}
+          <span onClick={() => this.makeHttpRequestWithPage(1)}>&laquo;</span>
+          {renderPageNumbers}
+          <span onClick={() => this.makeHttpRequestWithPage(2)}>&raquo;</span>
         </div>
       </div>
     );

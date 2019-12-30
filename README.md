@@ -1,3 +1,17 @@
+## Pagination avec React (Front end)
+
+## Adresse du tutoriel que j'ai suivi : 
+
+https://medium.com/@agoiabeladeyemi/pagination-in-reactjs-36f4a6a6eb43
+
+
+## Api utillisée : 
+
+### `reqres.in`
+
+https://reqres.in/
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
