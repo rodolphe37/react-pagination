@@ -2,80 +2,80 @@ import React from 'react';
 // import logo from './logo.svg';
 import styles from './App.module.css';
 
-function App() {
-  return (
-    <div className={styles.app}>
-      <table className={styles.table}>
-        <thead>
-          <tr>
-            <th>S/N</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1</td>
-            <td>firstName1</td>
-            <td>firstName1</td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>firstName2</td>
-            <td>lastName2</td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td>firstName3</td>
-            <td>firstName3</td>
-          </tr>
-          <tr>
-            <td>4</td>
-            <td>firstName4</td>
-            <td>firstName4</td>
-          </tr>
-          <tr>
-            <td>5</td>
-            <td>firstName5</td>
-            <td>firstName5</td>
-          </tr>
-          <tr>
-            <td>6</td>
-            <td>firstName6</td>
-            <td>lastName6</td>
-          </tr>
-          <tr>
-            <td>7</td>
-            <td>firstName7</td>
-            <td>firstName7</td>
-          </tr>
-          <tr>
-            <td>8</td>
-            <td>firstName8</td>
-            <td>firstName8</td>
-          </tr>
-          <tr>
-            <td>9</td>
-            <td>firstName9</td>
-            <td>firstName9</td>
-          </tr>
-          <tr>
-            <td>10</td>
-            <td>firstName10</td>
-            <td>firstName10</td>
-          </tr>
-        </tbody>
-      </table>
 
-      <div className={styles.pagination}>
-        <span>&laquo;</span>
-        <span className={styles.active}>1</span>
-        <span>2</span>
-        <span>3</span>
-        <span>4</span>
+class App extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      users: null,
+      total: null,
+      per_page: null,
+      current_page: null
+    }
+  }
+
+  componentDidMount() {
+    this.makeHttpRequestWithPage(1);
+  };
+
+
+  makeHttpRequestWithPage = async pageNumber => {
+    let response = await fetch(`https://reqres.in/api/users?page=${pageNumber}`, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-type': 'application.json',
+      },
+    });
+
+    const data = await response.json();
+
+    this.setState({
+      users: data.data,
+      total: data.total,
+      per_page: data.per_page,
+      current_page: data.current_page,
+    });
+  };
+
+
+  render() { console.dir(this.state.users)
+    let users;
+
+    if (this.state.users !== null) {
+      users = this.state.users.map(user => (
+        <tr key={user.id}>
+          <td>{user.id}</td>
+          <td>{user.first_name}</td>
+          <td>{user.last_name}</td>
+        </tr>
+      ));
+    };
+    return (
+      <div className={styles.app}>
+        <table className={styles.table}>
+          <thead>
+            <tr>
+              <th>S/N</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+            </tr>
+          </thead>
+          <tbody>
+            { users}
+          </tbody>
+        </table>
+
+        <div className={styles.pagination}>
+          <span>&laquo;</span>
+          <span className={styles.active}>1</span>
+          <span>2</span>
+          <span>3</span>
+          <span>4</span>
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 }
 
 export default App;
